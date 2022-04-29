@@ -1,10 +1,13 @@
-import Head from "next/head"
-import Image from "next/image"
-import NavBar from "../components/navbar/NavBar"
-import styles from "../styles/Home.module.css"
-import HomeTopSection from "./sections/HomeTopSection/HomeTopSection"
+import Head from "next/head";
+import Image from "next/image";
+import NavBar from "../components/navbar/NavBar";
+import styles from "../styles/Home.module.css";
+import HomeTopSection from "./sections/HomeTopSection/HomeTopSection";
+import { useState } from "react";
+import { ethers } from "ethers";
 
 export default function Home() {
+  
   return (
     <div>
       <Head>
@@ -18,5 +21,5 @@ export default function Home() {
       <NavBar />
       <HomeTopSection />
     </div>
-  )
+  );
 }
