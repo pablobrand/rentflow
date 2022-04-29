@@ -1,0 +1,18 @@
+.homeTopSectionBox{
+    background-image: url(../../../assets/imgs/backgroundHomeTop.jpg);
+    background-repeat:no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 150vh;
+}
+.homeTopItem{
+    opacity: 0.7;
+}
+.homeTopText{
+    opacity: 1;
+    color:black;
+}
+.homeMainText{
+    opacity: 1;
+    color:black;
+}
