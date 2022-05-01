@@ -9,6 +9,145 @@ import styles from "./hometopsection.module.css";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 
+const abiLandloard = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "addTenant",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "isOwner",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "my_tenants",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "payRent",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "tenants",
+    outputs: [
+      {
+        internalType: "address payable",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.fontWeightBold,
@@ -44,7 +183,38 @@ const HomeTopSection = () => {
     }
   }
 
-  //async function execute() {}
+  async function ExecuteAddTenant() {
+    if (typeof window.ethereum != undefined) {
+      const contractAddress = "0x86b6244836273f5224905Af86cf66c5DCf537FbC";
+      
+      const contract = new ethers.Contract(contractAddress, abiLandloard, signer);
+      try {
+        let tenantTest = '0xAAB00377393a786e65CdE298b55fBF07Aaa0aD0A'
+        await contract.addTenant(tenantTest);
+        console.log("Tenant Added!!")
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("Please install MetaMask");
+    }
+  }
+  async function ExecuteGetBalance() {
+    if (typeof window.ethereum != undefined) {
+      const contractAddress = "0x86b6244836273f5224905Af86cf66c5DCf537FbC";
+      
+      const contract = new ethers.Contract(contractAddress, abiLandloard, signer);
+      try {
+        const landloardBalance = await contract.getBalance();
+        console.log("this is the landloard balance: " + landloardBalance)
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("Please install MetaMask");
+    }
+  }
+
   return (
     <Box className={styles.homeTopSectionBox}>
       <Item className={styles.homeTopItem}>
@@ -60,14 +230,19 @@ const HomeTopSection = () => {
         </Typography>
       </Item>
       <Item>
-      {hasMetamask ? (
-        isConnected ? (
-          "Connected! "
+        {hasMetamask ? (
+          isConnected ? (
+            "Connected! "
+          ) : (
+            <Button onClick={() => connectToMetamask()}>
+              Connect to Metamask
+            </Button>
+          )
         ) : (
-        <Button onClick={() => connectToMetamask()}>Connect to Metamask</Button>
-      )) : (
-        "Please install metamask"
-      )}
+          "Please install metamask"
+        )}
+        {isConnected ? <button onClick={() => ExecuteAddTenant()}>Add Tenant</button> : ""}
+        {isConnected ? <button onClick={() => ExecuteGetBalance()}>Get Balance</button> : ""}
       </Item>
     </Box>
   );
