@@ -2,7 +2,7 @@ from brownie import LandLord, network, config
 from scripts.helpful_scripts import get_account
 from web3 import Web3
 
-# test this
+# test this as a contribution.
 def deploy_fund_me():
     landlord_account = get_account(index=0)
     landlord_contract = LandLord.deploy({"from": landlord_account})
