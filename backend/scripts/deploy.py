@@ -2,7 +2,7 @@ from brownie import LandLord, network, config
 from scripts.helpful_scripts import get_account
 from web3 import Web3
 
-# test
+# test this
 def deploy_fund_me():
     landlord_account = get_account(index=0)
     landlord_contract = LandLord.deploy({"from": landlord_account})
@@ -32,12 +32,14 @@ def islord(acc_index):
     check = land_contract.isOwner({"from": tenant_address})
     print(f"Are you the Owner?: {check}")
 
+
 def get_balance():
     landlord_account = get_account(index=0)
     land_contract = LandLord[-1]
     wei_balance = land_contract.getBalance({"from": landlord_account})
     value = Web3.fromWei(wei_balance, "ether")
     return value
+
 
 def main():
     deploy_fund_me()
@@ -49,9 +51,6 @@ def main():
 
     islord(0)
     print(f"Acct balance AFTER paying rent: {get_balance()}")
-
-
-
 
 
 # class DeployLottery:
@@ -103,4 +102,3 @@ def main():
 
 # def main():
 #     DeployLottery()
-
