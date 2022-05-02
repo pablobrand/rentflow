@@ -8,7 +8,7 @@ compiler:
     remappings:
       - '@chainlink=smartcontractkit/chainlink@1.3.0'
       - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.4.1'
-# dotenv: .env
+dotenv: .env
 networks:
   default: development
   rinkeby:

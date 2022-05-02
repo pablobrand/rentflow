@@ -5,8 +5,8 @@ from web3 import Web3
 # test this as a contribution. work
 def deploy_fund_me():
     landlord_account = get_account(index=0)
-    landlord_contract = LandLord.deploy({"from": landlord_account})
-    print(f"Contract deployed to {landlord_contract}")
+    landlord_contract = LandLord.deploy(30, {"from": landlord_account})
+    print(f"Contract deployed to {landlord_contract.address}")
 
 
 def add_tenant(acc_index):

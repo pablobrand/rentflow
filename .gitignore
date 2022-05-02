@@ -41,3 +41,5 @@ __pycache__
 .hypothesis/
 build/
 reports/
+backend/scripts/__pycache__
+backend/build/
