@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.10;
 
 //1. factory
 //2. rental agreement
@@ -9,7 +9,6 @@ pragma solidity ^0.8.0;
 
 interface IlendingSolution {
 
-    
     function depositFunds(uint256 amount) external;
 
     function withdrawFunds(uint256 amount) external;
