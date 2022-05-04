@@ -9,7 +9,7 @@ compiler:
     remappings:
       - '@chainlink=smartcontractkit/chainlink@1.3.0'
       - '@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.4.1'
-      - '@aave=aave/aave-v3-core@1.16.0'
+      - '@aave/v3=aave/aave-v3-core@1.16.0'
 dotenv: .env
 networks:
   default: development

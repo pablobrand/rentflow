@@ -7,7 +7,7 @@ pragma solidity 0.8.10;
 //3. interface
 //4. aave, or any other service
 
-interface IlendingSolution {
+interface ILendingSolution {
 
     function depositFunds(uint256 amount) external;
 

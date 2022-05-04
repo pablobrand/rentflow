@@ -11,7 +11,7 @@ import { IPool } from "@aave/contracts/interfaces/IPool.sol";
 import "../interfaces/ILendingSolution.sol";
 
 
-contract AaveLending is ILendingSolution {
+contract AaveLending is ILendingSolution, Ownable {
     using SafeERC20 for IERC20;
 
     IERC20 public aToken;

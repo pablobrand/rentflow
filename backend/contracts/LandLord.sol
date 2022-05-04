@@ -7,7 +7,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "../interfaces/ILendingSolution.sol";
 
 import "@aave/contracts/misc/AaveProtocolDataProvider.sol";
-//import "@aave/aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
+import "@aave/aave-protocol/contracts/configuration/LendingPoolAddressesProvider.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
