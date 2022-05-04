@@ -41,14 +41,18 @@ def get_balance():
     return value
 
 
+def check_upkeep():
+    landlord_account = get_account(index=0)
+    land_contract = LandLord[-1]
+
+
 def main():
     deploy_fund_me()
     print(f"Acct balance BEFORE paying rent: {get_balance()}")
 
-    for account in range(1, 5):
-        add_tenant(account)
-        pay_rent(account)
-
+    # for account in range(1, 5):
+    #     add_tenant(account)
+    #     pay_rent(account)
     islord(0)
     print(f"Acct balance AFTER paying rent: {get_balance()}")
 
