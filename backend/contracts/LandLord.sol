@@ -24,7 +24,7 @@ contract LandLord is Ownable, KeeperCompatibleInterface {
     address payable[] public tenants;
 
     IERC20 public tokenUsedForPayments;
-    ILendingService public lendingService;
+    ILendingSolution public lendingService;
 
     /**
     * Use an interval in seconds and a timestamp to slow execution of Upkeep
