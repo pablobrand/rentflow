@@ -13,6 +13,11 @@ compiler:
 dotenv: .env
 networks:
   default: development
+  kovan:
+    weth_token: '0xd0a1e359811322d97991e03f863a0c30c2cf029c'
+    lending_pool_address_provider: '0x651b8A8cA545b251a8f49B57D5838Da0a8DFbEF9'
+    dai_eth_price_feed: '0x22B58f1EbEDfCA50feF632bD73368b2FdA96D541'
+    dai_token: '0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD'
   rinkeby:
     eth_usd_price_feed: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e'
     verify: True
