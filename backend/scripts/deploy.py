@@ -2,10 +2,11 @@ from brownie import LandLord, network, config
 from scripts.helpful_scripts import get_account
 from web3 import Web3
 
+
 # test this as a contribution. work
-def deploy_fund_me():
+def deploy_contract():
     landlord_account = get_account(index=0)
-    landlord_contract = LandLord.deploy(30, {"from": landlord_account})
+    landlord_contract = LandLord.deploy({"from": landlord_account})
     print(f"Contract deployed to {landlord_contract.address}")
 
 
@@ -44,17 +45,42 @@ def get_balance():
 def check_upkeep():
     landlord_account = get_account(index=0)
     land_contract = LandLord[-1]
+    account = get_account()
+    erc20_address = config["networks"][network.show_active()]["weth_token"]
+    if network.show_active() in ["mainnet-fork"]:
+        get_weth(account=account)
+    lending_pool = get_lending_pool()
+    approve_erc20(amount, lending_pool.address, erc20_address, account)
+    print("Depositing...")
+    lending_pool.deposit(erc20_address, amount, account.address, 0, {"from": account})
+    print("Deposited!")
+    borrowable_eth, total_debt_eth = get_borrowable_data(lending_pool, account)
+    print(f"LETS BORROW IT ALL")
+    erc20_eth_price = get_asset_price()
+    amount_erc20_to_borrow = (1 / erc20_eth_price) * (borrowable_eth * 0.95)
+    print(f"We are going to borrow {amount_erc20_to_borrow} DAI")
+    borrow_erc20(lending_pool, amount_erc20_to_borrow, account)
+
+
+def send_to_aave():
+    landlord_account = get_account(index=0)
+    land_contract = LandLord[-1]
 
 
 def main():
-    deploy_fund_me()
-    print(f"Acct balance BEFORE paying rent: {get_balance()}")
+    deploy_contract()
+    add_tenant()
+    pay_rent()
+    send_to_aave()
 
-    # for account in range(1, 5):
-    #     add_tenant(account)
-    #     pay_rent(account)
-    islord(0)
-    print(f"Acct balance AFTER paying rent: {get_balance()}")
+    # deploy_fund_me()
+    # print(f"Acct balance BEFORE paying rent: {get_balance()}")
+
+    # # for account in range(1, 5):
+    # #     add_tenant(account)
+    # #     pay_rent(account)
+    # islord(0)
+    # print(f"Acct balance AFTER paying rent: {get_balance()}")
 
 
 # class DeployLottery:

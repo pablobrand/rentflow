@@ -11,11 +11,11 @@ interface ILendingSolution {
 
     function depositFunds(uint256 amount) external;
 
-    function withdrawFunds(uint256 amount) external;
+    // function withdrawFunds(uint256 amount) external;
 
-    function withdrawFundsAndInterest() external;
+    // function withdrawFundsAndInterest() external;
 
-    function checkBalance() external view returns(uint256); 
+    // function checkBalance() external view returns(uint256); 
 
 }
 
