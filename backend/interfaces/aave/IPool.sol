@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity 0.8.10;
 
-import {IPoolAddressesProvider} from './IPoolAddressesProvider.sol';
-import {DataTypes} from '../protocol/libraries/types/DataTypes.sol';
+import { IPoolAddressesProvider } from '@aave/contracts/interfaces/IPoolAddressesProvider.sol';
+import { DataTypes } from '@aave/contracts/protocol/libraries/types/DataTypes.sol';
 
 /**
  * @title IPool
