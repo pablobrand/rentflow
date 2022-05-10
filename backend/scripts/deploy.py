@@ -1,12 +1,15 @@
-from brownie import LandLord, network, config
+from operator import add
+from brownie import LandLord, network, config, AaveLending
 from scripts.helpful_scripts import get_account
+from scripts import get_weth
 from web3 import Web3
 
 
-def deploy_fund_me():
+# test this as a contribution. work
+def deploy_contract():
     landlord_account = get_account(index=0)
     landlord_contract = LandLord.deploy({"from": landlord_account})
-    print(f"Contract deployed to {landlord_contract}")
+    print(f"Contract deployed to {landlord_contract.address}")
 
 
 def add_tenant(acc_index):
@@ -17,11 +20,11 @@ def add_tenant(acc_index):
     land_contract.addTenant(tenant_address.address, {"from": landlord_account})
 
 
-def pay_rent(acc_index):
+def pay_rent(acc_index, value_amount: 0.001):
     tenant_address = get_account(index=acc_index)
     land_contract = LandLord[-1]
-    value = Web3.toWei(1, "ether")
-    print(f"value -> {value}")
+    value = Web3.toWei(value_amount, "ether")
+    print(f"Amount paid -> {value}")
     land_contract.payRent({"from": tenant_address, "value": value})
     print("SUCCESSFULLY PAID")
 
@@ -32,6 +35,7 @@ def islord(acc_index):
     check = land_contract.isOwner({"from": tenant_address})
     print(f"Are you the Owner?: {check}")
 
+
 def get_balance():
     landlord_account = get_account(index=0)
     land_contract = LandLord[-1]
@@ -39,19 +43,79 @@ def get_balance():
     value = Web3.fromWei(wei_balance, "ether")
     return value
 
+
+def transfer_to_aave():
+    tenant_address = get_account(index=1)
+    landlord_account = get_account(index=0)
+    land_contract = LandLord[-1]
+    # amount = Web3.toWei(0.1, "ether")
+    # amount = 0.01 * 1e18
+    tx = land_contract.approveTransfer({"from": tenant_address})
+    tx.wait(1)
+    land_contract.transferToAave({"from": tenant_address, "gas_limit": 100000})
+
+
+def deploy_aave_lending():
+    landlord_account = get_account(index=0)
+    erc20_address = config["networks"][network.show_active()]["weth_token"]
+    aave_contract = AaveLending.deploy(erc20_address, {"from": landlord_account})
+    print(f"Aave Contract Deployed!!: {aave_contract.address}")
+    return aave_contract
+
+
+def send_to_aave():
+    landlord_account = get_account(index=0)
+    tenant_address = get_account(index=1)
+    amount = 0.01 * 1e18
+    # value_amount = Web3.toWei(0.01, "ether")
+    # get_weth(value_amount=value_amount)
+    aave_lending_service = deploy_aave_lending()
+    erc20_address = config["networks"][network.show_active()]["weth_token"]
+    LandLord.deploy(
+        landlord_account.address,
+        tenant_address.address,
+        amount,
+        erc20_address,
+        aave_lending_service.address,
+        {"from": landlord_account},
+    )
+
+    # add_tenant(1)
+    # pay_rent(1, 0.001)
+    # print(f"Acct balance AFTER paying rent: {get_balance()}")
+    transfer_to_aave()
+
+    # land_contract = LandLord[-1]
+    # # account = get_account()
+    # if network.show_active() in ["mainnet-fork"]:
+    #     get_weth(account=landlord_account)
+
+    # approve_erc20(amount, lending_pool.address, erc20_address, account)
+    # print("Depositing...")
+    # lending_pool.deposit(erc20_address, amount, account.address, 0, {"from": account})
+    # print("Deposited!")
+    # borrowable_eth, total_debt_eth = get_borrowable_data(lending_pool, account)
+    # print(f"LETS BORROW IT ALL")
+    # erc20_eth_price = get_asset_price()
+    # amount_erc20_to_borrow = (1 / erc20_eth_price) * (borrowable_eth * 0.95)
+    # print(f"We are going to borrow {amount_erc20_to_borrow} DAI")
+    # borrow_erc20(lending_pool, amount_erc20_to_borrow, account)
+
+
 def main():
-    deploy_fund_me()
-    print(f"Acct balance BEFORE paying rent: {get_balance()}")
+    # deploy_contract()
+    # add_tenant()
+    # pay_rent()
+    send_to_aave()
 
-    for account in range(1, 5):
-        add_tenant(account)
-        pay_rent(account)
+    # deploy_fund_me()
+    # print(f"Acct balance BEFORE paying rent: {get_balance()}")
 
-    islord(0)
-    print(f"Acct balance AFTER paying rent: {get_balance()}")
-
-
-
+    # # for account in range(1, 5):
+    # #     add_tenant(account)
+    # #     pay_rent(account)
+    # islord(0)
+    # print(f"Acct balance AFTER paying rent: {get_balance()}")
 
 
 # class DeployLottery:
@@ -103,4 +167,3 @@ def main():
 
 # def main():
 #     DeployLottery()
-

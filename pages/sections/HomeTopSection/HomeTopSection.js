@@ -12,6 +12,145 @@ import Button from "@mui/material/Button";
 import { abiLandloard } from "../abiVariables";
 import { contractAddress } from "../globalInfo";
 
+const abiLandloard = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "addTenant",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "isOwner",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "my_tenants",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "payRent",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "tenants",
+    outputs: [
+      {
+        internalType: "address payable",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: "center",
@@ -48,6 +187,7 @@ const HomeTopSection = () => {
 
   async function ExecuteAddTenant() {
     if (typeof window.ethereum != undefined) {
+      
       //const contractAddress = "0x86b6244836273f5224905Af86cf66c5DCf537FbC";
 
       const contract = new ethers.Contract(
@@ -62,6 +202,7 @@ const HomeTopSection = () => {
       } catch (error) {
         console.log(error);
         console.log(error.data.message)
+
       }
     } else {
       console.log("Please install MetaMask");
@@ -69,6 +210,7 @@ const HomeTopSection = () => {
   }
   async function ExecuteGetBalance() {
     if (typeof window.ethereum != undefined) {
+      
       //const contractAddress = "0xd95b97fA24CfF91Bd2791cC144F7E172804697ed";
 
       const contract = new ethers.Contract(
@@ -80,6 +222,7 @@ const HomeTopSection = () => {
         const landloardBalance = await contract.getBalance();
         const formatedBalance = ethers.utils.formatEther(landloardBalance)
         console.log("this is the landloard balance: " + formatedBalance);
+
       } catch (error) {
         console.log(error);
       }
@@ -87,6 +230,8 @@ const HomeTopSection = () => {
       console.log("Please install MetaMask");
     }
   }
+
+
   return (
     <Box className={styles.homeTopSectionBox}>
       <Item>
@@ -145,6 +290,7 @@ const HomeTopSection = () => {
           </Button>
         </Item>
       </Container>
+
     </Box>
   );
 };
