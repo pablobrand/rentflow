@@ -4,15 +4,19 @@
     background-position: center;
     background-size: cover;
     height: 150vh;
-}
-.homeTopItem{
-    opacity: 0.7;
+    padding-top: 2%;
 }
 .homeTopText{
-    opacity: 1;
-    color:black;
+    color:white;
 }
 .homeMainText{
-    opacity: 1;
-    color:black;
+    color:white;
+}
+.buttonConnectWallet{
+    text-align: center;
+    padding-top: 40px;
+}
+.buttonsContainer{
+    text-align: center;
+    padding-top: 40px;
 }
