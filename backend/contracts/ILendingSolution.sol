@@ -9,7 +9,7 @@ pragma solidity 0.8.10;
 
 interface ILendingSolution {
 
-    function depositFunds(uint256 amount) external;
+    function deposit(uint256 amount) external;
 
     // function withdrawFunds(uint256 amount) external;
 
