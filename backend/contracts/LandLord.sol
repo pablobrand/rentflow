@@ -27,15 +27,7 @@ contract LandLord {
     IERC20 public tokenUsedForPayments;
     ILendingPool public aavePool;
 
-    // modifier onlyLandLord() {
-    //     require(msg.sender == landlord, "Restricted to the owner only");
-    //     _;
-    // }
-
-    // modifier onlyTenant() {
-    //     require(msg.sender == tenant, "Only tenant can access this");
-    //     _;
-    // }
+    event seeme(address aavePool, uint256 _amount, address sender, address tokenUsedForPayments);
 
     constructor (
         address _tokenUsedToPay,
@@ -45,21 +37,22 @@ contract LandLord {
         aavePool = ILendingPool(_lendingService);
     }
 
-    // function approveTransfer() public onlyTenant {
-    //     tokenUsedForPayments.approve(address(landlord), rent);
-
-    // }
-
     function transferToAave(uint256 _amount) public {
         // require(tokenUsedForPayments.allowance(tenant, address(this)) >= rent, "No Allowance");
-        // tokenUsedForPayments.transferFrom(msg.sender, address(aavePool), _amount);
+        tokenUsedForPayments.transferFrom(msg.sender, address(this), _amount);
         
-        // tokenUsedForPayments.approve(address(aavePool), _amount);
+        tokenUsedForPayments.approve(address(aavePool), _amount);
         // Deposit the _amount in the LendingPool
-        aavePool.deposit(address(tokenUsedForPayments), _amount, address(msg.sender), 0);
-        //tokenUsedForPayments.approve(address(aavePool), rent);
-        //lendingService.depositFunds(rent);
+
+        //emit seeme(address(aavePool), _amount, address(msg.sender), address(tokenUsedForPayments));
+        aavePool.deposit(address(tokenUsedForPayments), _amount, address(this), 0);
+
     }
+
+
+
+
+
 
 
     // function addTenant(address _address) public onlyLandLord {

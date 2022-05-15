@@ -128,7 +128,7 @@
 #     main()
 
 from brownie import LandLord, network, config, interface, accounts
-from scripts.helpful_scripts import get_account
+# from scripts.helpful_scripts import get_account
 from scripts.get_weth import get_weth
 from web3 import Web3
 
@@ -193,11 +193,20 @@ def get_account():
 
 
 
+def get_lending_pool():
+    lending_pool_addresses_provider = interface.ILendingPoolAddressesProvider(
+        config["networks"][network.show_active()]["lending_pool_addresses_provider"]
+    )
+    lending_pool_address = lending_pool_addresses_provider.getLendingPool()
+    lending_pool = interface.ILendingPool(lending_pool_address)
+    return lending_pool, lending_pool_address
+
 
 def approve_erc20(amount, spender, erc20_address, account):
     print("Approving ERC20 token...")
     erc20 = interface.IERC20(erc20_address)
     tx = erc20.approve(spender, amount, {"from": account})
+    print(f"ggggggr {tx.events}\n\n")
     tx.wait(1)
     print("Approved!")
     return tx
@@ -207,48 +216,52 @@ def transfer_to_aave(amount, erc20_address, aave_pool, account):
     
     land_contract = LandLord[-1]
 
+    print(f"AAVVEE ADDRESS: {aave_pool.address}!!!\n")
+    print(f"ERC20 ADDRESS: {erc20_address}!!!\n")
+    print(f"Aacount ADDRESS: {account.address}!!!\n")
+
+    approve_erc20(amount, land_contract.address, erc20_address, account)
     approve_erc20(amount, aave_pool.address, erc20_address, account)
 
     # aave_pool.deposit(erc20_address, amount, account.address, 0, {"from": account})
-    land_contract.transferToAave(amount, {"from": account})
+    tx = land_contract.transferToAave(amount, {"from": account})
+    tx.wait(1)
+    print(tx.events)
     print("Deposited!")
 
 
 def send_to_aave():
 
+    # set amount
     amount = Web3.toWei(0.001, "ether")
 
+    # get account
     account = get_account()
+
+    # get weth token
     erc20_address = config["networks"][network.show_active()]["weth_token"]
+
+    # fund account
     if network.show_active() in ["mainnet-fork"]:
         get_weth(account=account)
-    
 
+    # get pool and address
     aave_pool, lending_pool_address = get_lending_pool()
     
-    erc20_address = config["networks"][network.show_active()]["weth_token"]
-    
+    # deploy contract and pass in lending_pool regsitry address
     LandLord.deploy(
         erc20_address,
         lending_pool_address,
         {"from": account},
     )
 
+    # call to deposit into aave
     transfer_to_aave(
         amount=amount,
         erc20_address=erc20_address,
         aave_pool=aave_pool,
         account=account,
     )
-
-
-def get_lending_pool():
-    lending_pool_addresses_provider = interface.ILendingPoolAddressesProvider(
-        config["networks"][network.show_active()]["lending_pool_addresses_provider"]
-    )
-    lending_pool_address = lending_pool_addresses_provider.getLendingPool()
-    lending_pool = interface.ILendingPool(lending_pool_address)
-    return lending_pool, lending_pool_address 
 
 
 
